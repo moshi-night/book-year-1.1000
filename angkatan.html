@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wajah Angkatan — Bookyear '26</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .page-hero {
+      padding: 10rem 2rem 5rem;
+      text-align: center;
+      background: linear-gradient(to bottom, var(--parchment), var(--cream));
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: 'ANGKATAN';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 14vw, 12rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,146,74,0.1);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -45%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.2em;
+    }
+    .page-hero .section-title { position: relative; z-index: 1; }
+    .page-hero .section-tag { position: relative; z-index: 1; }
+    .page-hero .section-sub { position: relative; z-index: 1; }
+    .profiles-section { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+    .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.2rem; }
+    .profile-card { background: var(--white); border: 1px solid var(--warm); padding: 1.8rem 1.2rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.28s; position: relative; overflow: hidden; }
+    .profile-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, var(--gold), var(--rust)); transform: scaleX(0); transition: transform 0.28s; }
+    .profile-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(46,31,19,0.11); }
+    .profile-card:hover::after { transform: scaleX(1); }
+    .profile-avatar { width: 76px; height: 76px; border-radius: 50%; background: var(--parchment); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: var(--rust); margin: 0 auto 1rem; border: 2px solid var(--warm); transition: border-color 0.28s; overflow: hidden; }
+    .profile-card:hover .profile-avatar { border-color: var(--gold); }
+    .profile-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+    .profile-class { font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+    .profile-tagline { font-size: 0.78rem; color: var(--muted); font-style: italic; line-height: 1.5; }
+    .gallery-section { background: var(--brown); padding: 5rem 2rem; }
+    .gallery-inner { max-width: 1200px; margin: 0 auto; }
+    .gallery-section .section-title { color: var(--cream); }
+    .gallery-section .section-tag { color: var(--gold-light); }
+    .gallery-section .section-sub { color: rgba(237,229,208,0.6); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 180px; gap: 0.8rem; }
+    .gallery-item { background: rgba(255,255,255,0.06); overflow: hidden; position: relative; cursor: pointer; border: 1px solid rgba(184,146,74,0.15); }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(5) { grid-column: span 2; }
+    .gallery-item:nth-child(8) { grid-column: span 2; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s, filter 0.4s; filter: sepia(20%) contrast(1.05) brightness(0.92); }
+    .gallery-item:hover img { transform: scale(1.06); filter: sepia(0%) contrast(1.1) brightness(1); }
+    .gallery-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; }
+    .gallery-placeholder .ph-icon { font-size: 2rem; opacity: 0.3; }
+    .gallery-placeholder .ph-text { font-size: 0.72rem; color: rgba(184,146,74,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+    .gallery-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(20,12,6,0.8), transparent); padding: 1.5rem 1rem 0.8rem; font-family: 'Caveat', cursive; font-size: 0.9rem; color: var(--gold-light); opacity: 0; transition: opacity 0.3s; }
+    .gallery-item:hover .gallery-label { opacity: 1; }
+    .modal-tag { display: inline-block; background: var(--parchment); color: var(--rust); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.7rem; margin-bottom: 1.5rem; }
+    @media (max-width: 768px) {
+      .profiles-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item:nth-child(1) { grid-column: span 2; }
+      .gallery-item:nth-child(5) { grid-column: span 2; }
+      .gallery-item:nth-child(8) { grid-column: span 2; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Bookyear '26</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="angkatan.html" class="active">Lihat Angkatan</a></li>
+    <li><a href="pesan.html">Baca Pesan</a></li>
+    <li><a href="timeline.html">Timeline & Kisah</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="section-tag">✦ Mereka yang membentuk kisah ini</p>
+  <h1 class="section-title">Wajah Angkatan</h1>
+  <p class="section-sub">Dua puluh nama. Dua puluh cerita. Satu angkatan yang tak terlupakan.</p>
+</div>
+
+<section class="profiles-section">
+  <div class="profiles-grid" id="profilesGrid"></div>
+</section>
+
+<section class="gallery-section">
+  <div class="gallery-inner">
+    <p class="section-tag">✦ Momen Kita</p>
+    <h2 class="section-title" style="color:var(--cream);">Galeri Angkatan</h2>
+    <p class="section-sub" style="color:rgba(237,229,208,0.6);">Foto-foto yang menceritakan lebih dari seribu kata.</p>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Bookyear '26</div>
+  <p>Dibuat dengan penuh cinta untuk angkatan yang DAHSYAT !!!!!.</p>
+  <div class="copyright">© 2026 · Dibuat oleh Si jenius Yohan & Si jeniusMisla</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-avatar" id="mAvatar"></div>
+      <div class="modal-name" id="mName"></div>
+      <div class="modal-class" id="mClass"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="modal-field"><label>Cita-cita</label><span id="mCita"></span></div>
+        <div class="modal-field"><label>Hobi</label><span id="mHobi"></span></div>
+        <div class="modal-field"><label>Karakter</label><span id="mKarakter"></span></div>
+        <div class="modal-field"><label>Julukan</label><span id="mJulukan"></span></div>
+        <div class="modal-field"><label>Karakter Favorit</label><span id="mChar"></span></div>
+        <div class="modal-field"><label>Game Favorit</label><span id="mGame"></span></div>
+      </div>
+      <div class="modal-quote" id="mQuote"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MUSIC PLAYER -->
+<div class="music-player">
+  <button class="music-btn" id="prevBtn">&#9664;</button>
+  <button class="music-btn" id="playBtn">&#9654;</button>
+  <button class="music-btn" id="nextBtn">&#9654;&#9654;</button>
+  <div class="music-info">
+    <div class="music-label">Sedang Memutar</div>
+    <div class="music-title" id="musicTitle">Pilih Lagu</div>
+  </div>
+</div>
+<audio id="audioPlayer"></audio>
+
+<script>
+  const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzkuLeHB9G6drGbySrIQ1A6SAeWRSLo1djLJoCJ_fPSqho6WKIPizwEtDuufX0tcUEe/exec";
+
+  const playlist = [
+    { title: "In the sea", src: "bookyear1.2/in the sea - The Dreamer Piano.mp3" },
+    { title: "打上花火 — DAOKO", src: "bookyear1.2/DAOKO × 米津玄師『打上花火』MUSIC VIDEO - daoko_jp.mp3" },
+    { title: "Taweel Al Shawq — Ahmed Bukhatir", src: "bookyear1.2/Nasheed Taweel Alshawq - Ahmed Bukhatir  - أحمد بوخاطر - نشيد طويل الشوق - Ahmed Bukhatir  احمد بوخاطر.mp3" },
+  ];
+
+  let currentTrack = 0, isPlaying = false;
+  const audio = document.getElementById('audioPlayer');
+  const playBtn = document.getElementById('playBtn');
+  const titleEl = document.getElementById('musicTitle');
+
+  audio.addEventListener('ended', () => loadTrack((currentTrack + 1) % playlist.length));
+
+  function loadTrack(i) {
+    currentTrack = (i + playlist.length) % playlist.length;
+    titleEl.textContent = playlist[currentTrack].title;
+    audio.src = playlist[currentTrack].src;
+    if (isPlaying) audio.play().catch(() => {});
+  }
+
+  function togglePlay() {
+    if (!playlist[currentTrack].src) return;
+    if (isPlaying) {
+      audio.pause();
+      playBtn.innerHTML = '&#9654;';
+    } else {
+      if (!audio.src || audio.src === window.location.href) audio.src = playlist[currentTrack].src;
+      audio.play().catch(() => {});
+      playBtn.innerHTML = '&#9646;&#9646;';
+    }
+    isPlaying = !isPlaying;
+  }
+
+  playBtn.onclick = togglePlay;
+  document.getElementById('prevBtn').onclick = () => { loadTrack(currentTrack - 1); if (isPlaying) audio.play().catch(() => {}); };
+  document.getElementById('nextBtn').onclick = () => { loadTrack(currentTrack + 1); if (isPlaying) audio.play().catch(() => {}); };
+  titleEl.textContent = playlist[0].title;
+
+  // DATA GALERI
+  const gallery = [
+    { label: "Serangan israel",    src: "fotbar_bocil.jpg" },
+    { label: "kiwkiw", src: "fotbar_guru_indo2.jpeg" },
+    { label: "nunjuk teroris",  src: "fotbar_tanaH2.jpeg" },
+    { label: "fotbar_tanpa_admin",      src: "fotbar_tanpa_dev.jpeg" },
+    { label: "Abis ujian",  src: "abisujian.jpeg" },
+    { label: "Di sungai",    src: "fotbar_sungai.jpeg" },
+    { label: "Kelulusan",     src: "fotbar_lulus.jpeg" },
+    { label: "Fotbar pak hadri",      src: "fotbar_guru_mtk.jpeg" },
+    { label: "Fotbar skiwckiw",      src: "fotbar_guru_ips.jpeg" },
+  ];
+
+  let members = [];
+
+  async function fetchMembers() {
+    const grid = document.getElementById('profilesGrid');
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-style:italic;font-size:0.9rem;">Memuat data angkatan...</div>`;
+    try {
+      const res = await fetch(SHEETS_API_URL + '?type=members');
+      const data = await res.json();
+      members = data;
+      renderProfiles();
+    } catch(e) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-size:0.85rem;">⚠️ Gagal memuat data.<br/><a href="form.html" style="color:var(--rust);margin-top:0.5rem;display:inline-block;">→ Isi profil dulu</a></div>`;
+    }
+  }
+
+  function renderProfiles() {
+    const grid = document.getElementById('profilesGrid');
+    if (!members.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-style:italic;">Belum ada profil. <a href="form.html" style="color:var(--rust);">Isi profil dulu →</a></div>`;
+      return;
+    }
+    grid.innerHTML = members.map((m, i) => {
+      const inisial = m.nama ? m.nama[0].toUpperCase() : '?';
+      const avatarContent = m.foto
+        ? `<img src="${m.foto}" alt="${m.nama}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none';this.nextElementSibling.style.display=''"/><span style="display:none">${inisial}</span>`
+        : inisial;
+      return `<div class="profile-card" onclick="openModal(${i})">
+        <div class="profile-avatar">${avatarContent}</div>
+        <div class="profile-name">${m.nama}</div>
+        <div class="profile-class">${m.kelas}</div>
+        <div class="profile-tagline">"${(m.quote||'').substring(0,45)}…"</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderGallery() {
+    document.getElementById('galleryGrid').innerHTML = gallery.map(g => `
+      <div class="gallery-item">
+        ${g.src
+          ? `<img src="${g.src}" alt="${g.label}"/><div class="gallery-label">${g.label}</div>`
+          : `<div class="gallery-placeholder"><div class="ph-icon">📸</div><div class="ph-text">${g.label}</div></div>`}
+      </div>`).join('');
+  }
+
+  function openModal(i) {
+    const m = members[i];
+    const inisial = m.nama ? m.nama[0].toUpperCase() : '?';
+    const av = document.getElementById('mAvatar');
+    av.innerHTML = m.foto
+      ? `<img src="${m.foto}" alt="${m.nama}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'"/>`
+      : inisial;
+    document.getElementById('mName').textContent = m.nama;
+    document.getElementById('mClass').textContent = m.kelas;
+    document.getElementById('mCita').textContent = m.cita || '—';
+    document.getElementById('mHobi').textContent = m.hobi || '—';
+    document.getElementById('mKarakter').textContent = m.karakter || '—';
+    document.getElementById('mJulukan').textContent = m.julukan ? `"${m.julukan}"` : '—';
+    document.getElementById('mChar').textContent = m.char || '—';
+    document.getElementById('mGame').textContent = m.game || '—';
+    document.getElementById('mQuote').textContent = m.quote ? `"${m.quote}"` : '';
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  fetchMembers();
+  renderGallery();
+</script>
+</body>
+</html>

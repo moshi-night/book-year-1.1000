@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Isi Profil — Bookyear '26</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .form-hero {
+      padding: 9rem 2rem 4rem;
+      text-align: center;
+      background: linear-gradient(160deg, var(--brown) 0%, #3d2510 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-hero::before {
+      content: 'FORM';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(6rem, 18vw, 14rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,146,74,0.07);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -45%);
+      pointer-events: none;
+      letter-spacing: 0.2em;
+    }
+
+    .form-hero .section-title { color: var(--cream); position: relative; z-index: 1; }
+    .form-hero .section-tag  { color: var(--gold-light); position: relative; z-index: 1; }
+    .form-hero .section-sub  { color: rgba(237,229,208,0.6); position: relative; z-index: 1; }
+
+    /* FORM CONTAINER */
+    .form-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--warm);
+      border-top: 3px solid var(--rust);
+    }
+
+    .form-card-header {
+      padding: 2rem 2.5rem 1.5rem;
+      border-bottom: 1px solid var(--warm);
+    }
+
+    .form-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+    }
+
+    .form-card-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .form-card-body { padding: 2rem 2.5rem; }
+
+    /* FIELD */
+    .field {
+      margin-bottom: 1.6rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .field label .req {
+      color: var(--rust);
+      margin-left: 2px;
+    }
+
+    .field label .opt {
+      color: var(--gold);
+      font-size: 0.68rem;
+      font-style: italic;
+      text-transform: none;
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      background: var(--cream);
+      border: 1px solid var(--warm);
+      padding: 0.75rem 1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      border-radius: 0;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,146,74,0.1);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.7;
+    }
+
+    .field textarea.tall { min-height: 130px; }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a6a55' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .field-hint {
+      font-size: 0.73rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* PHOTO PREVIEW */
+    .photo-preview-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .photo-preview-wrap .field { flex: 1; margin-bottom: 0; }
+
+    .photo-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--warm);
+      background: var(--parchment);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--muted);
+      margin-top: 1.8rem;
+    }
+
+    .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* SECTION DIVIDER dalam form */
+    .form-section-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--gold);
+      margin: 2rem 0 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .form-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--warm);
+    }
+
+    /* TOGGLE PESAN */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--parchment);
+      border: 1px solid var(--warm);
+      margin-bottom: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle {
+      width: 40px;
+      height: 22px;
+      background: var(--warm);
+      border-radius: 11px;
+      position: relative;
+      transition: background 0.25s;
+      flex-shrink: 0;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: white;
+      top: 3px; left: 3px;
+      transition: transform 0.25s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .toggle.on { background: var(--rust); }
+    .toggle.on::after { transform: translateX(18px); }
+
+    .toggle-text {
+      font-size: 0.85rem;
+      color: var(--brown);
+      line-height: 1.4;
+    }
+
+    .toggle-text strong {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+    }
+
+    .pesan-fields {
+      display: none;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .pesan-fields.show { display: block; }
+
+    /* SUBMIT */
+    .form-submit-wrap {
+      padding: 1.5rem 2.5rem 2.5rem;
+      border-top: 1px solid var(--warm);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--rust);
+      color: var(--cream);
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-submit:hover:not(:disabled) { background: var(--brown); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .submit-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* STATUS */
+    .status-box {
+      display: none;
+      padding: 1.2rem 1.5rem;
+      margin: 0 2.5rem 1.5rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      border-left: 3px solid;
+    }
+
+    .status-box.success {
+      display: block;
+      background: #f0f7ec;
+      border-color: #4a8c2a;
+      color: #2d5a18;
+    }
+
+    .status-box.error {
+      display: block;
+      background: #fdf0ec;
+      border-color: var(--rust);
+      color: #7a2510;
+    }
+
+    .status-box.loading {
+      display: block;
+      background: var(--parchment);
+      border-color: var(--gold);
+      color: var(--brown);
+    }
+
+    /* SPINNER */
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(184,146,74,0.3);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .form-card-header, .form-card-body, .form-submit-wrap { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .field-row { grid-template-columns: 1fr; }
+      .status-box { margin-left: 1.5rem; margin-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Bookyear '26</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="angkatan.html">Lihat Angkatan</a></li>
+    <li><a href="pesan.html">Baca Pesan</a></li>
+    <li><a href="timeline.html">Timeline & Kisah</a></li>
+  </ul>
+</nav>
+
+<div class="form-hero">
+  <p class="section-tag">✦ Ceritakan dirimu</p>
+  <h1 class="section-title">Isi Profil Kamu</h1>
+  <p class="section-sub">Ini halamanmu. Isi dengan jujur — ini yang akan diingat angkatan tentang kamu.</p>
+</div>
+
+<section class="form-section">
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="form-card-title">Formulir Profil Angkatan 2026</div>
+      <div class="form-card-sub">Semua data yang kamu isi akan langsung muncul di halaman Wajah Angkatan. Isi yang bener pintar.</div>
+    </div>
+
+    <div class="form-card-body">
+
+      <!-- IDENTITAS -->
+      <div class="form-section-label">✦ Identitas</div>
+
+      <div class="field">
+        <label>Nama Lengkap <span class="req">*</span></label>
+        <input type="text" id="nama" placeholder="Nama kamu sesuai absensi" required/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Kelas <span class="req">*</span></label>
+          <select id="kelas" required>
+            <option value="">— Pilih kelas —</option>
+            <option>XII</option>
+            <option>XI</option>
+            <option>Gap Year</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Julukan <span class="opt">(opsional)</span></label>
+          <input type="text" id="julukan" placeholder='cth. "Si Kalem"'/>
+        </div>
+      </div>
+
+      <!-- FOTO PROFIL -->
+      <div class="form-section-label">✦ Foto Profil</div>
+
+      <div class="photo-preview-wrap">
+        <div class="field">
+          <label>URL Foto Profil <span class="opt">(opsional)</span></label>
+          <input type="url" id="foto" placeholder="https://..." oninput="previewPhoto(this.value)"/>
+          <div class="field-hint">Paste link foto dari Google Photos, Drive (pastikan publik), atau media lainnya. Kalau kosong, akan pakai inisial nama.</div>
+        </div>
+        <div class="photo-thumb" id="photoThumb">
+          <img id="photoPreviewImg" src="" alt="preview"/>
+          <span id="photoInitial">?</span>
+        </div>
+      </div>
+
+      <!-- DATA DIRI -->
+      <div class="form-section-label">✦ Tentang Kamu</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Cita-cita <span class="req">*</span></label>
+          <input type="text" id="cita" placeholder="cth. Dokter, Pengangguran..."/>
+        </div>
+        <div class="field">
+          <label>Hobi <span class="req">*</span></label>
+          <input type="text" id="hobi" placeholder="cth. Melukis, Main ff..."/>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Karakter <span class="req">*</span></label>
+          <input type="text" id="karakter" placeholder="cth. Sinting, Badut..."/>
+        </div>
+        <div class="field">
+          <label>Karakter Favorit <span class="opt">(opsional)</span></label>
+          <input type="text" id="char" placeholder="cth. Naruto, Hermione..."/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Game Favorit <span class="opt">(opsional)</span></label>
+        <input type="text" id="game" placeholder="cth. Minecraft, Mobile Legends..."/>
+      </div>
+
+      <div class="field">
+        <label>Kata-kata / Quote <span class="req">*</span></label>
+        <textarea id="quote" class="tall" placeholder="Tulis satu kalimat yang paling mewakili dirimu atau perjalananmu..."></textarea>
+        <div class="field-hint">Ini yang akan muncul di kartu profilmu. Bisa quote favorit atau kalimat buatan sendiri.</div>
+      </div>
+
+      <!-- PESAN & KESAN -->
+      <div class="form-section-label">✦ Pesan & Kesan</div>
+
+      <div class="toggle-wrap" onclick="togglePesan()">
+        <div class="toggle" id="pesanToggle"></div>
+        <div class="toggle-text">
+          <strong>Saya ingin menulis pesan & kesan</strong>
+          <span>Opsional — lewati kalau tidak ingin menambahkan</span>
+        </div>
+      </div>
+
+      <div class="pesan-fields" id="pesanFields">
+        <div class="field">
+          <label>Pesanmu untuk Angkatan</label>
+          <textarea id="pesan" class="tall" placeholder="Tulis apa yang ingin kamu sampaikan — untuk satu orang, beberapa orang, atau semua angkatan..."></textarea>
+        </div>
+        <div class="field">
+          <label>Ditujukan kepada</label>
+          <input type="text" id="pesanTo" placeholder='cth. "untuk seluruh angkatan", "untuk alok"'/>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- STATUS -->
+    <div class="status-box" id="statusBox"></div>
+
+    <div class="form-submit-wrap">
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()">Kirim Profil Saya</button>
+      <div class="submit-note">Data kamu langsung tersimpan dan akan muncul di bookyear.<br/>Kalau ada yang salah, hubungi Yohan atau Misla.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Bookyear '25</div>
+  <p>Dibuat dengan penuh cinta untuk angkatan yang luar DAHSYAT !!!!!.</p>
+  <div class="copyright">© 2025 · Dibuat oleh SI tamvan Yohan & SI jenius Misla</div>
+</footer>
+
+<script>
+  // ============================================================
+  // KONFIGURASI — Ganti dengan URL Apps Script kamu!
+  // ============================================================
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkuLeHB9G6drGbySrIQ1A6SAeWRSLo1djLJoCJ_fPSqho6WKIPizwEtDuufX0tcUEe/exec";
+  // Cara dapat URL ini ada di file PANDUAN_SETUP.txt
+  // ============================================================
+
+  let pesanOn = false;
+
+  function togglePesan() {
+    pesanOn = !pesanOn;
+    document.getElementById('pesanToggle').classList.toggle('on', pesanOn);
+    document.getElementById('pesanFields').classList.toggle('show', pesanOn);
+  }
+
+  function previewPhoto(url) {
+    const img = document.getElementById('photoPreviewImg');
+    const initial = document.getElementById('photoInitial');
+    const nama = document.getElementById('nama').value;
+    if (url) {
+      img.src = url;
+      img.style.display = 'block';
+      initial.style.display = 'none';
+      img.onerror = () => {
+        img.style.display = 'none';
+        initial.style.display = '';
+        initial.textContent = nama ? nama[0].toUpperCase() : '?';
+      };
+    } else {
+      img.style.display = 'none';
+      initial.style.display = '';
+      initial.textContent = nama ? nama[0].toUpperCase() : '?';
+    }
+  }
+
+  document.getElementById('nama').addEventListener('input', function() {
+    const initial = document.getElementById('photoInitial');
+    if (!document.getElementById('foto').value) {
+      initial.textContent = this.value ? this.value[0].toUpperCase() : '?';
+    }
+  });
+
+  function setStatus(type, msg) {
+    const box = document.getElementById('statusBox');
+    box.className = `status-box ${type}`;
+    box.innerHTML = msg;
+  }
+
+  function validate() {
+    const required = ['nama', 'kelas', 'cita', 'hobi', 'karakter', 'quote'];
+    for (const id of required) {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.focus();
+        el.style.borderColor = 'var(--rust)';
+        setTimeout(() => el.style.borderColor = '', 2000);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function submitForm() {
+    if (!validate()) {
+      setStatus('error', '⚠️ Mohon isi semua field yang wajib diisi (ditandai *).');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    setStatus('loading', '<span class="spinner"></span> Mengirim data kamu...');
+
+    const data = {
+      nama:      document.getElementById('nama').value.trim(),
+      kelas:     document.getElementById('kelas').value,
+      julukan:   document.getElementById('julukan').value.trim(),
+      foto:      document.getElementById('foto').value.trim(),
+      cita:      document.getElementById('cita').value.trim(),
+      hobi:      document.getElementById('hobi').value.trim(),
+      karakter:  document.getElementById('karakter').value.trim(),
+      char:      document.getElementById('char').value.trim(),
+      game:      document.getElementById('game').value.trim(),
+      quote:     document.getElementById('quote').value.trim(),
+      pesan:     pesanOn ? document.getElementById('pesan').value.trim() : '',
+      pesanTo:   pesanOn ? document.getElementById('pesanTo').value.trim() : '',
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      setStatus('success',
+        `✅ <strong>Profil ${data.nama} berhasil dikirim!</strong><br/>
+        Data kamu sudah masuk ke bookyear. Kalau dalam 1–2 menit belum muncul, refresh halaman Wajah Angkatan.`
+      );
+      btn.textContent = 'Terkirim ✓';
+
+    } catch (err) {
+      setStatus('error',
+        `❌ Gagal mengirim. Cek koneksi internet kamu atau hubungi Yohan/Misla.<br/>
+        <small style="opacity:0.7">${err.message}</small>`
+      );
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pesan & Kesan — Bookyear '26</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .page-hero {
+      padding: 10rem 2rem 5rem;
+      text-align: center;
+      background: var(--brown);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: 'PESAN';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(6rem, 18vw, 16rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,146,74,0.08);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -45%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.1em;
+    }
+    .page-hero .section-title { color: var(--cream); position: relative; z-index: 1; }
+    .page-hero .section-tag { color: var(--gold-light); position: relative; z-index: 1; }
+    .page-hero .section-sub { color: rgba(237,229,208,0.6); position: relative; z-index: 1; }
+    .messages-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+    .messages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .message-card { background: var(--white); border: 1px solid var(--warm); padding: 2rem 1.8rem 1.8rem; position: relative; transition: all 0.28s; overflow: hidden; }
+    .message-card::before { content: '\201C'; position: absolute; font-family: 'Cormorant Garamond', serif; font-size: 7rem; line-height: 1; color: var(--warm); top: -0.8rem; left: 1rem; pointer-events: none; }
+    .message-card::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--rust); transform: scaleY(0); transition: transform 0.28s; transform-origin: top; }
+    .message-card:hover { box-shadow: 0 12px 40px rgba(46,31,19,0.1); transform: translateY(-3px); }
+    .message-card:hover::after { transform: scaleY(1); }
+    .message-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; font-weight: 300; line-height: 1.85; color: var(--brown); margin-bottom: 1.5rem; position: relative; z-index: 1; padding-top: 2rem; }
+    .message-footer { display: flex; flex-direction: column; gap: 0.2rem; border-top: 1px solid var(--warm); padding-top: 1rem; }
+    .message-from { font-family: 'Caveat', cursive; font-size: 1.05rem; color: var(--rust); font-weight: 600; }
+    .message-to { font-size: 0.73rem; color: var(--muted); letter-spacing: 0.06em; }
+    .message-card.featured { grid-column: span 2; background: var(--parchment); border-color: var(--gold); }
+    .message-card.featured .message-text { font-size: 1.2rem; }
+    @media (max-width: 768px) {
+      .message-card.featured { grid-column: span 1; }
+      .messages-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Bookyear '26</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="angkatan.html">Lihat Angkatan</a></li>
+    <li><a href="pesan.html" class="active">Baca Pesan</a></li>
+    <li><a href="timeline.html">Timeline & Kisah</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="section-tag">✦ Dari hati ke hati</p>
+  <h1 class="section-title">Pesan & Kesan</h1>
+  <p class="section-sub">Kata-kata yang tak sempat terucap, Kini tertulis indah di sini.</p>
+</div>
+
+<section class="messages-section">
+  <div class="ornament">Pesan untuk Angkatan</div>
+  <div class="messages-grid" id="messagesGrid"></div>
+</section>
+
+<footer>
+  <div class="footer-logo">Bookyear '26</div>
+  <p>Dibuat dengan penuh cinta untuk angkatan yang DAHSYAT !!!!!.</p>
+  <div class="copyright">© 2026 · Dibuat oleh Si tamvan Yohan & Si jenius Misla</div>
+</footer>
+
+<!-- MUSIC PLAYER -->
+<div class="music-player">
+  <button class="music-btn" id="prevBtn">&#9664;</button>
+  <button class="music-btn" id="playBtn">&#9654;</button>
+  <button class="music-btn" id="nextBtn">&#9654;&#9654;</button>
+  <div class="music-info">
+    <div class="music-label">Sedang memutar</div>
+    <div class="music-title" id="musicTitle">Pilih Lagu</div>
+  </div>
+</div>
+<audio id="audioPlayer"></audio>
+
+<script>
+  const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzkuLeHB9G6drGbySrIQ1A6SAeWRSLo1djLJoCJ_fPSqho6WKIPizwEtDuufX0tcUEe/exec";
+
+  const playlist = [
+    { title: "In the sea", src: "bookyear1.2/in the sea - The Dreamer Piano.mp3" },
+    { title: "打上花火 — DAOKO", src: "bookyear1.2/DAOKO × 米津玄師『打上花火』MUSIC VIDEO - daoko_jp.mp3" },
+    { title: "Taweel Al Shawq — Ahmed Bukhatir", src: "bookyear1.2/Nasheed Taweel Alshawq - Ahmed Bukhatir  - أحمد بوخاطر - نشيد طويل الشوق - Ahmed Bukhatir  احمد بوخاطر.mp3" },
+  ];
+
+  let currentTrack = 0, isPlaying = false;
+  const audio = document.getElementById('audioPlayer');
+  const playBtn = document.getElementById('playBtn');
+  const titleEl = document.getElementById('musicTitle');
+
+  audio.addEventListener('ended', () => loadTrack((currentTrack + 1) % playlist.length));
+
+  function loadTrack(i) {
+    currentTrack = (i + playlist.length) % playlist.length;
+    titleEl.textContent = playlist[currentTrack].title;
+    audio.src = playlist[currentTrack].src;
+    if (isPlaying) audio.play().catch(() => {});
+  }
+
+  function togglePlay() {
+    if (!playlist[currentTrack].src) return;
+    if (isPlaying) {
+      audio.pause();
+      playBtn.innerHTML = '&#9654;';
+    } else {
+      if (!audio.src || audio.src === window.location.href) audio.src = playlist[currentTrack].src;
+      audio.play().catch(() => {});
+      playBtn.innerHTML = '&#9646;&#9646;';
+    }
+    isPlaying = !isPlaying;
+  }
+
+  playBtn.onclick = togglePlay;
+  document.getElementById('prevBtn').onclick = () => { loadTrack(currentTrack - 1); if (isPlaying) audio.play().catch(() => {}); };
+  document.getElementById('nextBtn').onclick = () => { loadTrack(currentTrack + 1); if (isPlaying) audio.play().catch(() => {}); };
+  titleEl.textContent = playlist[0].title;
+
+  async function fetchMessages() {
+    const grid = document.getElementById('messagesGrid');
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-style:italic;">Memuat pesan...</div>`;
+    try {
+      const res = await fetch(SHEETS_API_URL + '?type=messages');
+      const data = await res.json();
+      if (!data.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-style:italic;">Belum ada pesan. Isi dulu lewat form profil!</div>`;
+        return;
+      }
+      grid.innerHTML = data.map((msg, i) => `
+        <div class="message-card ${i===0?'featured':''}">
+          <p class="message-text">${msg.pesan}</p>
+          <div class="message-footer">
+            <span class="message-from">— ${msg.nama}</span>
+            <span class="message-to">${msg.pesanTo || 'untuk angkatan'}</span>
+          </div>
+        </div>`).join('');
+    } catch(e) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);">⚠️ Gagal memuat pesan. Pastikan URL Apps Script sudah diisi.</div>`;
+    }
+  }
+  fetchMessages();
+</script>
+</body>
+</html>

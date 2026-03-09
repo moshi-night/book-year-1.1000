@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timeline & Pengajar — Bookyear '26</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .page-hero {
+      padding: 10rem 2rem 5rem;
+      text-align: center;
+      background: linear-gradient(160deg, var(--brown) 0%, #4a2e18 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '2026';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 20vw, 18rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,146,74,0.07);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -45%);
+      pointer-events: none;
+    }
+    .page-hero .section-title { color: var(--cream); position: relative; z-index: 1; }
+    .page-hero .section-tag  { color: var(--gold-light); position: relative; z-index: 1; }
+    .page-hero .section-sub  { color: rgba(237,229,208,0.6); position: relative; z-index: 1; }
+
+    /* ─── TIMELINE ─── */
+    .timeline-section { max-width: 900px; margin: 0 auto; padding: 5rem 2rem; }
+    .timeline { position: relative; padding: 0; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold) 5%, var(--gold) 95%, transparent);
+      transform: translateX(-50%);
+    }
+    .timeline-item { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 0; margin-bottom: 3rem; align-items: start; }
+    .timeline-left { padding-right: 2.5rem; text-align: right; }
+    .timeline-right { padding-left: 2.5rem; text-align: left; }
+    .timeline-center { display: flex; justify-content: center; padding-top: 1.1rem; }
+    .timeline-item:nth-child(odd) .timeline-left { order: 1; }
+    .timeline-item:nth-child(odd) .timeline-center { order: 2; }
+    .timeline-item:nth-child(odd) .timeline-right { order: 3; }
+    .timeline-item:nth-child(even) .timeline-left  { order: 3; text-align: left; padding-right: 0; padding-left: 2.5rem; }
+    .timeline-item:nth-child(even) .timeline-center { order: 2; }
+    .timeline-item:nth-child(even) .timeline-right { order: 1; text-align: right; padding-left: 0; padding-right: 2.5rem; }
+    .timeline-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--rust); border: 3px solid var(--cream); box-shadow: 0 0 0 2px var(--gold); flex-shrink: 0; }
+    .timeline-content { background: var(--white); border: 1px solid var(--warm); padding: 1.5rem 1.8rem; }
+    .timeline-date { font-family: 'Caveat', cursive; font-size: 1rem; color: var(--gold); margin-bottom: 0.3rem; }
+    .timeline-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+    .timeline-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+
+    /* ─── PENGAJAR FAVORIT ─── */
+    .pengajar-section {
+      background: var(--parchment);
+      padding: 5rem 2rem;
+    }
+    .pengajar-inner { max-width: 760px; margin: 0 auto; }
+
+    .dev-note {
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .pengajar-list { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .pengajar-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: var(--white);
+      border: 1px solid var(--warm);
+      padding: 1rem 1.5rem;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pengajar-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--rust);
+      transform: scaleY(0);
+      transition: transform 0.25s;
+    }
+
+    .pengajar-row:hover { transform: translateX(4px); box-shadow: 0 6px 24px rgba(46,31,19,0.08); }
+    .pengajar-row:hover::before { transform: scaleY(1); }
+
+    /* Top 3 special styling */
+    .pengajar-row.rank-1 { border-color: #c8a840; background: #fffdf4; }
+    .pengajar-row.rank-2 { border-color: #a0a0a0; background: #fafafa; }
+    .pengajar-row.rank-3 { border-color: #c87c40; background: #fff9f5; }
+
+    .rank-badge {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      min-width: 2rem;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .rank-1 .rank-badge { color: #c8a840; }
+    .rank-2 .rank-badge { color: #909090; }
+    .rank-3 .rank-badge { color: #c87c40; }
+    .pengajar-row:not(.rank-1):not(.rank-2):not(.rank-3) .rank-badge { color: var(--muted); font-size: 1.1rem; }
+
+    .rank-medal {
+      font-size: 1.4rem;
+      min-width: 1.8rem;
+      text-align: center;
+    }
+
+    .pengajar-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .rank-1 .pengajar-name { font-size: 1.3rem; }
+
+    .pengajar-bar-wrap {
+      width: 120px;
+      height: 4px;
+      background: var(--warm);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .pengajar-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(to right, var(--gold), var(--rust));
+    }
+
+    @media (max-width: 768px) {
+      .timeline::before { left: 20px; }
+      .timeline-item { grid-template-columns: 40px 1fr; }
+      .timeline-item .timeline-left,
+      .timeline-item:nth-child(even) .timeline-left { display: none; }
+      .timeline-item .timeline-center,
+      .timeline-item:nth-child(even) .timeline-center { order: 1; }
+      .timeline-item .timeline-right,
+      .timeline-item:nth-child(even) .timeline-right { order: 2; text-align: left; padding-left: 2rem; padding-right: 0; }
+      .pengajar-bar-wrap { width: 70px; }
+      .pengajar-row { padding: 0.9rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Bookyear '26</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="angkatan.html">Lihat Angkatan</a></li>
+    <li><a href="pesan.html">Baca Pesan</a></li>
+    <li><a href="timeline.html" class="active">Timeline & Kisah</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="section-tag">✦ Perjalanan yang kita tempuh bersama</p>
+  <h1 class="section-title">Timeline & Kisah</h1>
+  <p class="section-sub">Jejak waktu dan cerita-cerita yang bikin kita tertawa, terharu, dan tidak akan pernah berani diakui di depan orang tua.</p>
+</div>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <p class="section-tag">✦ Jejak Waktu</p>
+  <h2 class="section-title">Timeline Angkatan</h2>
+  <p class="section-sub">Dari hari pertama hingga hari terakhir — semua ada di sini.</p>
+  <div class="timeline" id="timelineContainer"></div>
+</section>
+
+<!-- PENGAJAR FAVORIT -->
+<section class="pengajar-section">
+  <div class="pengajar-inner">
+    <p class="section-tag">✦ Versi Developer</p>
+    <h2 class="section-title">Pengajar Favorit</h2>
+    <p class="section-sub">Mereka yang sangat meng-inspirasi hingga detik ini.</p>
+    <p class="dev-note">* Urutan ini sepenuhnya opini developer (Mas yohan), bukan hasil voting resmi 😌</p>
+    <div class="pengajar-list" id="pengajarList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Bookyear '26</div>
+  <p>Dibuat dengan penuh cinta untuk angkatan yang luar biasa.</p>
+  <div class="copyright">© 2026 · Dibuat oleh Si tamvan Yohan & Si jenius Misla</div>
+</footer>
+
+<!-- MUSIC PLAYER -->
+<div class="music-player">
+  <button class="music-btn" id="prevBtn">&#9664;</button>
+  <button class="music-btn" id="playBtn">&#9654;</button>
+  <button class="music-btn" id="nextBtn">&#9654;&#9654;</button>
+  <div class="music-info">
+    <div class="music-label">Sekarang Memutar</div>
+    <div class="music-title" id="musicTitle">Pilih Lagu</div>
+  </div>
+</div>
+<audio id="audioPlayer"></audio>
+
+<script>
+  // ==========================================
+  // DATA TIMELINE — Edit di sini!
+  // ==========================================
+  const timelineData = [
+    { date: "Juli 2021",  title: "Hari Pertama",   desc: "Masa orientasi dan kesedihan — tapi di sinilah segalanya dimulai. Siapa yang menyangka bakal ada yang di DO ?" },
+    { date: "Des 2022",   title: "Kultum pertama",   desc: "Kultum standard yang cuma membahas seputar adab dan ya lu tau sendirilah apa yang lu omongin 🥱." },
+    { date: "Mar 2023",   title: "Hawai dan study tour",      desc: "ada yang makan-makan, ada yang jelalatan. lagian kapan lagi bisa keluar pondok selain di malam hari yee kan 😏." },
+    { date: "Okt 2023",   title: "Perpindahan Pondok",  desc: "Siapa yang nyangka bakal mondok di reruntuhan cuy!!! 😂, tapi gpp soalnya makin seru." },
+    { date: "Jan 2024",   title: "Masa Ujian dan munaqosyah",   desc: "Hari-hari ujian yang panas, ada yang belajar, ada yang ngaji, ada yang beli jelly potter. ckckck" },
+    { date: "Mei 2025",   title: "Kelulusan",        desc: "Momen paling di tunggu, ada yang menetap menjadi abu, dan ada yang pergi jadi sapu. good luck tod" },
+  ];
+
+  // ==========================================
+  // DATA PENGAJAR FAVORIT
+  // ==========================================
+  const pengajarData = [
+    { nama: "Ust. Adnan",      medal: "🥇" },
+    { nama: "Ust. Kholis",     medal: "🥈" },
+    { nama: "Ust. Karim",      medal: "🥉" },
+    { nama: "Ust. Ali",        medal: ""   },
+    { nama: "Ust. Alwi",       medal: ""   },
+    { nama: "Ust. Hari",       medal: ""   },
+    { nama: "Ust. Fadhlu",     medal: ""   },
+    { nama: "Pak Hardi",       medal: ""   },
+    { nama: "Ust. Syaifullah", medal: ""   },
+    { nama: "Isi sendiri",           medal: ""   }, // slot ke-10, isi sendiri
+  ];
+
+  // ── RENDER TIMELINE ──
+  function renderTimeline() {
+    document.getElementById('timelineContainer').innerHTML = timelineData.map(item => `
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-content">
+            <div class="timeline-date">${item.date}</div>
+            <div class="timeline-title">${item.title}</div>
+            <div class="timeline-desc">${item.desc}</div>
+          </div>
+        </div>
+        <div class="timeline-center"><div class="timeline-dot"></div></div>
+        <div class="timeline-right"></div>
+      </div>`).join('');
+  }
+
+  // ── RENDER PENGAJAR ──
+  function renderPengajar() {
+    const total = pengajarData.length;
+    document.getElementById('pengajarList').innerHTML = pengajarData.map((p, i) => {
+      const rank = i + 1;
+      const rankClass = rank <= 3 ? `rank-${rank}` : '';
+      const barWidth = Math.round((1 - i / total) * 100);
+      return `
+        <div class="pengajar-row ${rankClass}">
+          <div class="rank-badge">${rank}</div>
+          <div class="rank-medal">${p.medal}</div>
+          <div class="pengajar-name">${p.nama}</div>
+          <div class="pengajar-bar-wrap">
+            <div class="pengajar-bar" style="width:${barWidth}%"></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── MUSIC ──
+  const playlist = [
+    { title: "In the sea", src: "bookyear1.2/in the sea - The Dreamer Piano.mp3" },
+    { title: "打上花火 — DAOKO", src: "bookyear1.2/DAOKO × 米津玄師『打上花火』MUSIC VIDEO - daoko_jp.mp3" },
+    { title: "Taweel Al Shawq — Ahmed Bukhatir", src: "bookyear1.2/Nasheed Taweel Alshawq - Ahmed Bukhatir  - أحمد بوخاطر - نشيد طويل الشوق - Ahmed Bukhatir  احمد بوخاطر.mp3" },
+  ];
+
+  let currentTrack = 0, isPlaying = false;
+  const audio = document.getElementById('audioPlayer');
+  const playBtn = document.getElementById('playBtn');
+  const titleEl = document.getElementById('musicTitle');
+
+  audio.addEventListener('ended', () => loadTrack((currentTrack + 1) % playlist.length));
+
+  function loadTrack(i) {
+    currentTrack = (i + playlist.length) % playlist.length;
+    titleEl.textContent = playlist[currentTrack].title;
+    audio.src = playlist[currentTrack].src;
+    if (isPlaying) audio.play().catch(() => {});
+  }
+
+  function togglePlay() {
+    if (!playlist[currentTrack].src) return;
+    if (isPlaying) {
+      audio.pause();
+      playBtn.innerHTML = '&#9654;';
+    } else {
+      if (!audio.src || audio.src === window.location.href) audio.src = playlist[currentTrack].src;
+      audio.play().catch(() => {});
+      playBtn.innerHTML = '&#9646;&#9646;';
+    }
+    isPlaying = !isPlaying;
+  }
+
+  playBtn.onclick = togglePlay;
+  document.getElementById('prevBtn').onclick = () => { loadTrack(currentTrack - 1); if (isPlaying) audio.play().catch(() => {}); };
+  document.getElementById('nextBtn').onclick = () => { loadTrack(currentTrack + 1); if (isPlaying) audio.play().catch(() => {}); };
+  titleEl.textContent = playlist[0].title;
+
+  // INIT
+  renderTimeline();
+  renderPengajar();
+</script>
+</body>
+</html>
